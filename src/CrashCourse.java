@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -6,7 +9,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class CrashCourse {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("===== CORE BASICS =====");
         // 1. A class is a blueprint for modelling an object
         // 2. A model is literally any entity, irrespective of which
@@ -195,14 +198,77 @@ public class CrashCourse {
          * pretty much the same syntax
          * while ,do while and for loops
          */
-        String[] names = {"omolefe","emmanuel","chukwurah","ebuehi"};
+        String[] names = {"omolefe", "emmanuel", "chukwurah", "ebuehi"};
 
         // the enhanced for loop
         for (String name : names) {
             System.out.println(name);
         }
 
+        System.out.println("===== EXCEPTION HANDLING =====");
+        /*
+         * Exception Handling
+         * There are three types of exceptions
+         * 1. Checked : exceptions we're to lookout for. they're basically errors that must be handled by the user at compile time
+         * 2. Unchecked: exceptions that occur at runtime
+         *   NullPointerException
+         *   ArithmeticException: diving a number by a string
+         *   IllegalArgumentException
+         *   IndexOutOfBoundException
+         *   IllegalStateException
+         *
+         * 3. Errors: Errors that occur outside the application
+         *     stack overflow error
+         *     OOM errors
+         *
+         * Every error has a message and a stack trace
+         *
+         * Hierarchy of Exceptions
+         *                 Throwable
+         *         Exception         Error
+         * RuntimeException
+         *
+         * All exceptions inheriting the RuntimeExceptions are unchecked.
+         * All exceptions inheriting the Exception class are checked (must be handled at compile time)
+         *
+         * To catch exceptions, use a try-catch block or a try-with block
+         * Note that the order of the catch blocks matter, parent classes should be below child classes
+         *
+         * To handle cleanup work after a try-catch block, use the "finally" block
+         */
+        FileReader reader = null;
+        try {
+            reader = new FileReader("java.txt");
+            System.out.println("file opened");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException | NullPointerException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        /*
+         * custom exceptions
+         * You can simply create custom exceptions by extending the Exception (checked)
+         * or RuntimeException(unchecked) class
+         * Even though you can always extend the Throwable class, it's conventional to stick
+         * with the Exception and RuntimeException classes
+         */
+        class UserNotFoundException extends  Exception {
+           UserNotFoundException(String message){
+               super(message);
+           }
+        }
+
+        //throw new UserNotFoundException("Why am i failing");
+
         System.out.println("===== THE END 🚀 =====");
+
         // Remaining parts to be covered
         // 1. OOP (interfaces, access modifiers, enums, records)
         // 2. Explaining specific keywords like transient, native ...
